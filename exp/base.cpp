@@ -1,5 +1,4 @@
 #include "base.h"
-#pragma comment(linker, "/default:ntdll.lib")
 
 #define PAGE_SIZE 0x1000
 #define KERNEL_NAME_LENGTH 0X0D

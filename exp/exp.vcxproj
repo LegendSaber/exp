@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="base.cpp" />
     <ClCompile Include="CVE-2014-4113.cpp" />
+    <ClCompile Include="CVE-2015-2546.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
     <ClInclude Include="CVE-2014-4113.h" />
+    <ClInclude Include="CVE-2015-2546.h" />
     <ClInclude Include="ntapi.h" />
   </ItemGroup>
   <ItemGroup>
