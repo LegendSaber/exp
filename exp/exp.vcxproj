@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="base.cpp" />
     <ClCompile Include="CVE-2014-4113.cpp" />
+    <ClCompile Include="CVE-2015-0057.cpp" />
     <ClCompile Include="CVE-2015-2546.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
     <ClInclude Include="CVE-2014-4113.h" />
+    <ClInclude Include="CVE-2015-0057.h" />
     <ClInclude Include="CVE-2015-2546.h" />
     <ClInclude Include="ntapi.h" />
   </ItemGroup>
@@ -58,7 +60,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141_xp</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -127,7 +129,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <ExceptionHandling>false</ExceptionHandling>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>

@@ -1,5 +1,6 @@
 #include "CVE-2014-4113.h"
 #include "CVE-2015-2546.h"
+#include "CVE-2015-0057.h"
 
 #define VUL_NAME "CVE-2015-2546"
 
@@ -21,6 +22,11 @@ int main()
 			system("whoami");
 		}
 	}
+	else if (strcmp(VUL_NAME, "CVE-2015-0057") == 0)
+	{
+
+	}
+
 	
 	system("pause");
 
