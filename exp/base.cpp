@@ -64,7 +64,7 @@ PVOID GetHalDispatchTable()
 																  PAGE_READWRITE);
 	if (!pModuleInformation)
 	{
-		printf("VirtualAlloc Error");
+		ShowError("VirtualAlloc", GetLastError());
 		goto exit;
 	}
 
@@ -83,8 +83,10 @@ PVOID GetHalDispatchTable()
 
 	// 获取模块名
 	RtlMoveMemory(szImageName,
-		(PVOID)(pModuleInformation->Module[0].ImageName + pModuleInformation->Module[0].PathLength),
-		KERNEL_NAME_LENGTH);
+				  (PVOID)(pModuleInformation->Module[0].ImageName + 
+			      pModuleInformation->Module[0].PathLength),
+				  KERNEL_NAME_LENGTH);
+
 	// 转换为UNICODE_STRING类型
 	RtlCreateUnicodeStringFromAsciiz(&uDllName, (PUCHAR)szImageName);
 
@@ -104,7 +106,7 @@ PVOID GetHalDispatchTable()
 
 	if (pHalDispatchTable == NULL)
 	{
-		printf("GetProcAddress Error\n");
+		ShowError("GetProcAddress", GetLastError());
 		goto exit;
 	}
 
@@ -118,12 +120,48 @@ exit:
 					dwReturnLength,
 					MEM_DECOMMIT | MEM_RELEASE);
 	}
+
 	if (pMappedBase)
 	{
 		LdrUnloadDll(pMappedBase);
 	}
 
 	return pXHalQuerySystemInformation;
+}
+
+PVOID GetHMValidateHandle()
+{
+	PVOID pFuncAddr = NULL;
+	HMODULE hUser32 = NULL;
+	PBYTE pIsMenu = NULL;
+	DWORD i = 0, dwFuncOffset = 0;
+
+	hUser32 = LoadLibraryA("user32.dll");
+	if (!hUser32)
+	{
+		ShowError("LoadLibraryA", GetLastError());
+		goto exit;
+	}
+
+	pIsMenu = (PBYTE)GetProcAddress(hUser32, "IsMenu");
+	if (!pIsMenu)
+	{
+		ShowError("GetProcAddress", GetLastError());
+		goto exit;
+	}
+
+	for (i = 0; i < PAGE_SIZE; i++)
+	{
+		if (pIsMenu[i] == 0xE8)
+		{
+			dwFuncOffset = *PDWORD(pIsMenu + i + 1);
+			pFuncAddr = (PVOID)(dwFuncOffset + pIsMenu + i + 5);
+			break;
+		}
+	}
+
+exit:
+	return pFuncAddr;
 }
 
 void ShowError(char *msg, DWORD dwErrorCode)

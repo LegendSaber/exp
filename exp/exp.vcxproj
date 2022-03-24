@@ -23,6 +23,7 @@
     <ClCompile Include="CVE-2014-4113.cpp" />
     <ClCompile Include="CVE-2015-0057.cpp" />
     <ClCompile Include="CVE-2015-2546.cpp" />
+    <ClCompile Include="CVE-2016-0095.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +31,7 @@
     <ClInclude Include="CVE-2014-4113.h" />
     <ClInclude Include="CVE-2015-0057.h" />
     <ClInclude Include="CVE-2015-2546.h" />
+    <ClInclude Include="CVE-2016-0095.h" />
     <ClInclude Include="ntapi.h" />
   </ItemGroup>
   <ItemGroup>
