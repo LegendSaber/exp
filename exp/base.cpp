@@ -25,12 +25,12 @@ BOOL AllocateZeroMemory()
 		goto exit;
 	}
 
-
+	ZeroMemory((PVOID)0, dwZeroSize);
 exit:
 	return bRet;
 }
 
-PVOID GetHalDispatchTable()
+PVOID GetHalQuerySystemInformation()
 {
 	NTSTATUS status = STATUS_SUCCESS;
 	DWORD dwReturnLength = 0;
@@ -162,6 +162,24 @@ PVOID GetHMValidateHandle()
 
 exit:
 	return pFuncAddr;
+}
+
+BOOL CallNtQueryIntervalProfile()
+{
+	BOOL bRet = TRUE;
+	NTSTATUS status;
+
+
+	status = NtQueryIntervalProfile(ProfileTotalIssues, NULL);
+	if (!NT_SUCCESS(status))
+	{
+		ShowError("NtQueryIntervalProfile", status);
+		bRet = FALSE;
+		goto exit;
+	}
+
+exit:
+	return bRet;
 }
 
 void ShowError(char *msg, DWORD dwErrorCode)
