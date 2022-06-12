@@ -27,9 +27,6 @@
     <ClCompile Include="CVE-2014-4113.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CVE-2015-2546.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -43,6 +40,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CVE-2016-0165.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="exp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CVE-2016-7255.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,6 +72,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CVE-2016-0165.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVE-2016-7255.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

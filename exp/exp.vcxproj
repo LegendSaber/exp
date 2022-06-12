@@ -25,8 +25,9 @@
     <ClCompile Include="CVE-2015-2546.cpp" />
     <ClCompile Include="CVE-2016-0095.cpp" />
     <ClCompile Include="CVE-2016-0165.cpp" />
+    <ClCompile Include="CVE-2016-7255.cpp" />
     <ClCompile Include="CVE-2018-8120.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="exp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="CVE-2015-2546.h" />
     <ClInclude Include="CVE-2016-0095.h" />
     <ClInclude Include="CVE-2016-0165.h" />
+    <ClInclude Include="CVE-2016-7255.h" />
     <ClInclude Include="CVE-2018-8120.h" />
     <ClInclude Include="ntapi.h" />
   </ItemGroup>

@@ -138,9 +138,27 @@ BOOL CallNtQueryIntervalProfile()
 {
 	BOOL bRet = TRUE;
 	NTSTATUS status = STATUS_SUCCESS;
+	HMODULE hDll = NULL;
 
+	hDll = LoadLibrary("ntdll.dll");
+	if (!hDll)
+	{
+		bRet = FALSE;
+		ShowError("LoadLibrary", GetLastError());
+		goto exit;
+	}
 
-	status = NtQueryIntervalProfile(ProfileTotalIssues, NULL);
+	lpfnNtQueryIntervalProfile MyNtQueryIntervalProfile = (lpfnNtQueryIntervalProfile)GetProcAddress(hDll, "NtQueryIntervalProfile");
+
+	if (!MyNtQueryIntervalProfile)
+	{
+		bRet = FALSE;
+		ShowError("MyNtQueryIntervalProfile", GetLastError());
+		goto exit;
+	}
+
+	DWORD dwRet = 0;
+	status = MyNtQueryIntervalProfile(ProfileTotalIssues, &dwRet);
 	if (!NT_SUCCESS(status))
 	{
 		ShowError("NtQueryIntervalProfile", status);
