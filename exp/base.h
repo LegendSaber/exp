@@ -5,6 +5,8 @@
 #include "ntapi.h"
 #pragma comment(linker, "/defaultlib:ntdll.lib")
 
+#define PAGE_SIZE 0x1000
+#define KERNEL_NAME_LENGTH 0X0D
 #define TYPE_WINDOW 0x1
 
 #pragma pack(1)

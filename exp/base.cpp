@@ -1,8 +1,5 @@
 #include "base.h"
 
-#define PAGE_SIZE 0x1000
-#define KERNEL_NAME_LENGTH 0X0D
-
 void ShowError(char *msg, DWORD dwErrorCode)
 {
 	printf("%s Error 0x%X\n", msg, dwErrorCode);
