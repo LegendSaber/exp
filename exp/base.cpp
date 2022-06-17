@@ -192,7 +192,7 @@ PVOID GetHMValidateHandle()
 	{
 		if (pIsMenu[i] == 0xE8)
 		{
-			dwFuncOffset = *PDWORD(pIsMenu + i + 1);
+			dwFuncOffset = *(PDWORD)(pIsMenu + i + 1);
 			pFuncAddr = (PVOID)(dwFuncOffset + pIsMenu + i + 5);
 			break;
 		}

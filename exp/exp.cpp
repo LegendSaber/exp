@@ -7,7 +7,7 @@
 #include "CVE-2016-7255.h"
 #include "CVE-2017-0263.h"
 
-#define VUL_NAME "CVE-2017-0263"
+#define VUL_NAME "CVE-2015-2546"
 
 int main()
 {
