@@ -7,3 +7,4 @@
 ### CVE-2016-0165的说明在：https://bbs.pediy.com/thread-272635.htm
 ### CVE-2015-0057的说明在：https://bbs.pediy.com/thread-272782.htm
 ### CVE-2017-0263的说明在：https://bbs.pediy.com/thread-273313.htm
+### CVE-2016-7255的说明在：https://bbs.pediy.com/thread-273328.htm
