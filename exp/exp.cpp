@@ -6,12 +6,14 @@
 #include "CVE-2016-0165.h"
 #include "CVE-2016-7255.h"
 #include "CVE-2017-0263.h"
+#include "CVE-2013-3660.h"
 
-#define VUL_NAME "CVE-2015-2546"
+#define VUL_NAME "CVE-2013-3660"
 
 int main()
 {
 	BOOL bSucc = FALSE;
+
 
 	if (strcmp(VUL_NAME, "CVE-2014-4113") == 0)
 	{
@@ -44,6 +46,10 @@ int main()
 	else if (strcmp(VUL_NAME, "CVE-2017-0263") == 0)
 	{
 		bSucc = Exploit_CVE_2017_0263();
+	}
+	else if (strcmp(VUL_NAME, "CVE-2013-3660") == 0)
+	{
+		bSucc = Exploit_CVE_2013_3360();
 	}
 
 	if (bSucc) printf("Exploit %s Sucess...\n", VUL_NAME);

