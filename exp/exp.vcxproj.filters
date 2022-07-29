@@ -54,6 +54,9 @@
     <ClCompile Include="CVE-2013-3660.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CVE-2014-1767.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ntapi.h">
@@ -87,6 +90,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CVE-2013-3660.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CVE-2014-1767.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

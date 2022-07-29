@@ -7,14 +7,14 @@
 #include "CVE-2016-7255.h"
 #include "CVE-2017-0263.h"
 #include "CVE-2013-3660.h"
+#include "CVE-2014-1767.h"
 
-#define VUL_NAME "CVE-2013-3660"
+#define VUL_NAME "CVE-2014-1767"
 
 int main()
 {
 	BOOL bSucc = FALSE;
-
-
+	
 	if (strcmp(VUL_NAME, "CVE-2014-4113") == 0)
 	{
 		bSucc = Exploit_CVE_2014_4113();
@@ -51,8 +51,12 @@ int main()
 	{
 		bSucc = Exploit_CVE_2013_3360();
 	}
-
-	if (bSucc) printf("Exploit %s Sucess...\n", VUL_NAME);
+	else if (strcmp(VUL_NAME, "CVE-2014-1767") == 0)
+	{
+		bSucc = Exploit_CVE_2014_1767();
+	}
+	
+	if (bSucc) printf("Exploit %s Success...\n", VUL_NAME);
 	else printf("Exploit %s Fail...\n", VUL_NAME);
 
 	system("whoami");
