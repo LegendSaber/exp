@@ -5,6 +5,26 @@ void ShowError(char *msg, DWORD dwErrorCode)
 	printf("%s Error 0x%X\n", msg, dwErrorCode);
 }
 
+BOOL CreateCmd()
+{
+	STARTUPINFO si = { 0 };
+	PROCESS_INFORMATION pi = { 0 };
+
+	si.cb = sizeof(si);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_SHOW;
+
+	BOOL bRet = CreateProcess(NULL, "cmd.exe", NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi);
+	if (bRet)
+	{
+		CloseHandle(pi.hThread);
+		CloseHandle(pi.hProcess);
+	}
+	else ShowError("CreateProcess", GetLastError());
+
+	return bRet;
+}
+
 BOOL AllocateZeroMemory()
 {
 	NTSTATUS status = STATUS_SUCCESS;

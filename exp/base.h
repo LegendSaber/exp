@@ -34,6 +34,7 @@ typedef void* (__fastcall *lHMValidateHandle)(HWND h, int type);
 typedef NTSTATUS(WINAPI* lpfnNtQueryIntervalProfile)(IN DWORD Src, IN OUT PDWORD Profile);
 
 void ShowError(char *msg, DWORD dwErrorCode);			// 打印错误信息
+BOOL CreateCmd();										// 创建CMD窗口
 BOOL AllocateZeroMemory();								// 在0地址申请内存
 PVOID GetHalQuerySystemInformation();					// 获取保存HalQuerySystemInformation函数的位置
 PVOID GetHMValidateHandle();							// 获取HMValidateHandle函数
